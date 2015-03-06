@@ -368,6 +368,18 @@ img <- readPNG("images/pca_dists.png")
 
 ---
 
+## Brief comment about MVPA Goal 2
+========================================================
+
+### Goal: develop image-based disease biomarkers
+
+- "Confounders" can improve predictive performance
+- Need knowledge of the population distribution to which the biomarker will be applied
+- In machine learning this is called dataset shift, covariate shift, etc
+
+---
+
+
 ## Thank you!
 ========================================================
 
