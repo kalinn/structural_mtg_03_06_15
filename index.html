@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Multivariate Pattern Analysis and Confounding in Neuroimaging</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Multivariate Pattern Analysis and Confounding in Neuroimaging">
+  <meta name="author" content="Kristin Linn">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/prettify/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Multivariate Pattern Analysis and Confounding in Neuroimaging</h1>
+    <h2></h2>
+    <p>Kristin Linn<br/>March 6, 2015</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Roadmap</h2>
+  </hgroup>
+  <article data-timings="">
+    <h1></h1>
+
+<ul>
+<li>Motivate and define the goals of Multivariate Pattern Analysis (MVPA)</li>
+<li>Demonstrate the consequences of confounding</li>
+<li>Inverse probability weighting to address confounding in MVPA</li>
+<li>Simulated and real data examples</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <h2>How does disease affect brain structure?</h2>
+  </hgroup>
+  <article data-timings="">
+    <h1></h1>
+
+<h3>&quot;Mass-univariate&quot; approaches test for group differences at each voxel</h3>
+
+<ul>
+<li>e.g., Statistical Parametric Mapping, Voxel-based morphometry</li>
+</ul>
+
+<p><img src="assets/fig/unnamed-chunk-1-1.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" style="display: block; margin: auto;" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>Multivariate Pattern Analysis (MVPA)</h2>
+  </hgroup>
+  <article data-timings="">
+    <h1></h1>
+
+<h3>Any tool that can identify joint disease patterns across the brain.</h3>
+
+<ul>
+<li>SVM </li>
+<li>Logistic regression</li>
+<li>Scalar on image regression</li>
+</ul>
+
+<h3><strong>MVPA goals</strong>:</h3>
+
+<ol>
+<li>Study structural patterns in the brain that characterize disease</li>
+<li>Develop image-based disease biomarkers</li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>Support Vector Machine (SVM)</h2>
+  </hgroup>
+  <article data-timings="">
+    <div style='float:left;width:48%;' class='centered'>
+  <p><img src="assets/fig/unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" style="display: block; margin: auto;" /></p>
+
+</div>
+<div style='float:right;width:48%;' class='centered'>
+  <p><img src="assets/fig/unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" style="display: block; margin: auto;" /></p>
+
+</div>
+<div style='float:left;width:96%;'>
+  <h3>In neuroimaging each point is a brain, classes are cases/controls</h3>
+
+<p><sup><a href="http://docs.opencv.org/doc/tutorials/ml/introduction_to_svm/introduction_to_svm.html">http://docs.opencv.org/doc/tutorials/ml/introduction_to_svm/introduction_to_svm.html</a></sup></p>
+
+</div>
+<!-- <h1></h1>
+
+ -->
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-5" style="background:;">
+  <hgroup>
+    <h2>MVPA using the SVM</h2>
+  </hgroup>
+  <article data-timings="">
+    <h1></h1>
+
+<h3>The SVM returns a vector of <span style="color:red">weights</span>, one per voxel/region</h3>
+
+<ul>
+<li>Weights indicate relative contribution to the discrimative rule</li>
+</ul>
+
+<p><img src="assets/fig/unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" style="display: block; margin: auto;" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-6" style="background:;">
+  <hgroup>
+    <h2>Marginal vs Joint MVPA</h2>
+  </hgroup>
+  <article data-timings="">
+    <h1></h1>
+
+<h3>Non-imaging variables can be informative about disease process</h3>
+
+<ul>
+<li><p>Investigators must decide whether or not to include non-image variables as features </p></li>
+<li><p>We define <span style="color:red">Marginal MVPA</span> to be any MVPA that uses only the image</p></li>
+<li><p>We define <span style="color:red">Joint MVPA</span> to be any MVPA that uses image and non-image variables</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-7" style="background:;">
+  <hgroup>
+    <h2>Confounding in Neuroimaging</h2>
+  </hgroup>
+  <article data-timings="">
+    <h1></h1>
+
+<h3>A <span style="color:red">confounder</span> is a non-image variable that affects both disease and image</h3>
+
+<ul>
+<li>e.g., In Alzheimer&#39;s disease <span style="color:red">age</span> is associated with diagnosis and atrophy</li>
+</ul>
+
+<h3>Recall the goals of MVPA:</h3>
+
+<ol>
+<li>Study structural patterns in the brain that characterize disease</li>
+<li>Develop image-based disease biomarkers</li>
+</ol>
+
+<h3>It is important the analysis reflect the target MVPA goal!</h3>
+
+<ul>
+<li>This talk focuses on Goal 1 with brief comments about Goal 2</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-8" style="background:;">
+  <hgroup>
+    <h2>Confounding and MVPA Goal 1</h2>
+  </hgroup>
+  <article data-timings="">
+    <h1></h1>
+
+<h3>Goal: estimate the stuctural pattern that characterizes disease</h3>
+
+<ul>
+<li>Ideally, observe each patient with and without disease</li>
+<li>In causal inference terms: want to see both potential outcomes</li>
+</ul>
+
+<h3>Several problems:</h3>
+
+<ul>
+<li>Can&#39;t observe both potential outcomes</li>
+<li>Can&#39;t randomize disease</li>
+<li>Matching on all confounders may not be feasible</li>
+<li>Not addressing confounding may lead to a biased estimate of the disease pattern</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-9" style="background:;">
+  <hgroup>
+    <h2>Confounding Toy Example</h2>
+  </hgroup>
+  <article data-timings="">
+    <h1></h1>
+
+<p><img src="assets/fig/unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" style="display: block; margin: auto;" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-10" style="background:;">
+  <hgroup>
+    <h2>Voxel-wise &quot;adjustment&quot;</h2>
+  </hgroup>
+  <article data-timings="">
+    <div style='float:left;width:48%;' class='centered'>
+  <p><center>&quot;Adjusted SVM&quot;</center></p>
+
+</div>
+<div style='float:right;width:48%;' class='centered'>
+  <p><center>&quot;CN-Adjusted SVM&quot;</center></p>
+
+</div>
+<div style='float:left;width:96%;'>
+  <p><img src="assets/fig/unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" style="display: block; margin: auto;" /></p>
+
+<h3>Note:</h3>
+
+<ul>
+<li>Both methods are &quot;conditional&quot; on A</li>
+<li>Changes interpretation of features, i.e., now <span style="color:red">joint</span> with A</li>
+</ul>
+
+</div>
+<!-- <h1></h1>
+
+ -->
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-11" style="background:;">
+  <hgroup>
+    <h2>Inverse Probability Weighting</h2>
+  </hgroup>
+  <article data-timings="">
+    <h1></h1>
+
+<p><img src="assets/fig/unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" style="display: block; margin: auto;" /></p>
+
+<div style='float:left;width:48%;' class='centered'>
+  
+</div>
+<div style='float:right;width:48%;' class='centered'>
+  
+</div>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-12" style="background:;">
+  <hgroup>
+    <h2>Inverse Probability Weighting</h2>
+  </hgroup>
+  <article data-timings="">
+    <h1></h1>
+
+<p><img src="assets/fig/unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" style="display: block; margin: auto;" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-13" style="background:;">
+  <hgroup>
+    <h2>IPW-MVPA</h2>
+  </hgroup>
+  <article data-timings="">
+    <h1></h1>
+
+<h3><span style="color:red">Idea</span>: perform MVPA in the pseudo-population created by IPW</h3>
+
+<ul>
+<li><p>Define \(W_{i} = I(D_{i}=1)\mbox{pr} (D_{i}=1 \mid {\boldsymbol A}_{i}) + I(D_{i}=0)\mbox{pr} (D_{i}=0 \mid {\boldsymbol A}_{i})\)</p></li>
+<li><p>Weight each subject by \(W_{i}^{-1}\) </p></li>
+</ul>
+
+<h3>Usually IP weights are unknown and must be estimated</h3>
+
+<ul>
+<li>Logistic regression: 
+\[
+\mbox{logit}[ \mbox{pr} (D=1 \mid {\boldsymbol A})] = \beta_{0} + \beta_{1}^{T}{\boldsymbol A}
+\]</li>
+<li>Obtain \(\widehat{W}_{i}\) by plugging in 
+\[\widehat{\mbox{pr}} (D_{i}=1 \mid {\boldsymbol A}_{i}) = \widehat{\beta}_{0} + \widehat{\beta}_{1}^{T}{\boldsymbol A}
+\]</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-14" style="background:;">
+  <hgroup>
+    <h2>IPW-SVM</h2>
+  </hgroup>
+  <article data-timings="">
+    <h1></h1>
+
+<h3>Soft-margin SVM</h3>
+
+<ul>
+<li>Weight the slack variables \(\xi_{i}\) by IP weights</li>
+<li>Extension of class imbalance weighting </li>
+</ul>
+
+<div style='float:left;width:48%;' class='centered'>
+  <p><img src="assets/fig/unnamed-chunk-9-1.png" title="plot of chunk unnamed-chunk-9" alt="plot of chunk unnamed-chunk-9" style="display: block; margin: auto;" /></p>
+
+</div>
+<div style='float:right;width:48%;' class='centered'>
+  <p><img src="assets/fig/unnamed-chunk-10-1.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" style="display: block; margin: auto;" /></p>
+
+</div>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-15" style="background:;">
+  <hgroup>
+    <h2>IPW-SVM in R</h2>
+  </hgroup>
+  <article data-timings="">
+    <h1></h1>
+
+<h3>To our knowledge, no SVM package allows subject-level weights</h3>
+
+<ul>
+<li>Approximate IPW-SVM:
+
+<ol>
+<li>Estimate the IP weights and define \(\widehat{T}_{i}\) to be the estimated weight for subject \(i\) rounded to the nearest integer.</li>
+<li>Create a new dataset that contains \(\widehat{T}_{i}\) copies of subject \(i\)&#39;s data vector, \((Y_{i}, X_{i}, A_{i})\).</li>
+<li>Train the SVM in the new dataset.</li>
+</ol></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-16" style="background:;">
+  <hgroup>
+    <h2>Simulations</h2>
+  </hgroup>
+  <article data-timings="">
+    <h1></h1>
+
+<p><img src="assets/fig/unnamed-chunk-11-1.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" style="display: block; margin: auto;" /></p>
+
+<ul>
+<li>Generate 2,000 samples, save half for testing</li>
+<li>Learn SVM on 1,000 training samples to get &quot;true&quot; weights</li>
+<li>Take a biased subsample (n=200 per class) from the 1,000 training samples</li>
+<li>Compare methods on the biased subsample<br></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-17" style="background:;">
+  <hgroup>
+    <h2>Marginal MVPA Results</h2>
+  </hgroup>
+  <article data-timings="">
+    <h1></h1>
+
+<p><img src="assets/fig/unnamed-chunk-12-1.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" style="display: block; margin: auto;" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-18" style="background:;">
+  <hgroup>
+    <h2>Joint MVPA Results</h2>
+  </hgroup>
+  <article data-timings="">
+    <h1></h1>
+
+<p><img src="assets/fig/unnamed-chunk-13-1.png" title="plot of chunk unnamed-chunk-13" alt="plot of chunk unnamed-chunk-13" style="display: block; margin: auto;" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-19" style="background:;">
+  <hgroup>
+    <h2>Joint MVPA Results</h2>
+  </hgroup>
+  <article data-timings="">
+    <h1></h1>
+
+<ul>
+<li>\(X_{1} = 5 - 3D + \epsilon_{1}\)</li>
+<li>\(X_{2} = -3A - 4D + 3AD + \epsilon_{2}\)</li>
+</ul>
+
+<p><img src="assets/fig/unnamed-chunk-14-1.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" style="display: block; margin: auto;" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-20" style="background:;">
+  <hgroup>
+    <h2>Caveat</h2>
+  </hgroup>
+  <article data-timings="">
+    <h1></h1>
+
+<ul>
+<li>Can&#39;t weight slack variables when the data are linearly separable!</li>
+<li>Data become more separable as \(p\) increases and are always perfectly linearly separable when \(p > n\). </li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-21" style="background:;">
+  <hgroup>
+    <h2>Caveat</h2>
+  </hgroup>
+  <article data-timings="">
+    <h1></h1>
+
+<p><img src="assets/fig/unnamed-chunk-15-1.png" title="plot of chunk unnamed-chunk-15" alt="plot of chunk unnamed-chunk-15" style="display: block; margin: auto;" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-22" style="background:;">
+  <hgroup>
+    <h2>Current solution: PCA-IPW-SVM</h2>
+  </hgroup>
+  <article data-timings="">
+    <h1></h1>
+
+<ol>
+<li>Estimate the IP weights and create the new dataset that contains subject-level copies</li>
+<li>Do PCA on the image features in the new dataset</li>
+<li>Train SVM on the first several PC scores</li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-23" style="background:;">
+  <hgroup>
+    <h2>Results from ADNI data</h2>
+  </hgroup>
+  <article data-timings="">
+    <h1></h1>
+
+<ul>
+<li>137 ROI volumes</li>
+<li>Used an age-matched sample to estimate the &quot;true&quot; weights for classifying Alzheimer&#39;s vs. controls</li>
+<li>Performed PCA-IPW-SVM on a biased subsample of the full age-matched sample</li>
+</ul>
+
+<p><img src="assets/fig/unnamed-chunk-16-1.png" title="plot of chunk unnamed-chunk-16" alt="plot of chunk unnamed-chunk-16" style="display: block; margin: auto;" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-24" style="background:;">
+  <hgroup>
+    <h2>Thank you!</h2>
+  </hgroup>
+  <article data-timings="">
+    <h1></h1>
+
+<h3>Questions?</h3>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Roadmap'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='How does disease affect brain structure?'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Multivariate Pattern Analysis (MVPA)'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Support Vector Machine (SVM)'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='MVPA using the SVM'>
+         5
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=6 title='Marginal vs Joint MVPA'>
+         6
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=7 title='Confounding in Neuroimaging'>
+         7
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=8 title='Confounding and MVPA Goal 1'>
+         8
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=9 title='Confounding Toy Example'>
+         9
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=10 title='Voxel-wise &quot;adjustment&quot;'>
+         10
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=11 title='Inverse Probability Weighting'>
+         11
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=12 title='Inverse Probability Weighting'>
+         12
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=13 title='IPW-MVPA'>
+         13
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=14 title='IPW-SVM'>
+         14
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=15 title='IPW-SVM in R'>
+         15
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=16 title='Simulations'>
+         16
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=17 title='Marginal MVPA Results'>
+         17
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=18 title='Joint MVPA Results'>
+         18
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=19 title='Joint MVPA Results'>
+         19
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=20 title='Caveat'>
+         20
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=21 title='Caveat'>
+         21
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=22 title='Current solution: PCA-IPW-SVM'>
+         22
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=23 title='Results from ADNI data'>
+         23
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=24 title='Thank you!'>
+         24
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<!-- Google Prettify -->
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+  <script src='libraries/highlighters/prettify/js/lang-r.js'></script>
+  <script>
+    var pres = document.getElementsByTagName("pre");
+    for (var i=0; i < pres.length; ++i) {
+      pres[i].className = "prettyprint linenums";
+    }
+    prettyPrint();
+  </script>
+  <!-- End Google Prettify --> 
+  </html>
